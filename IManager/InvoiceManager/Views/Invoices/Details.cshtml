@@ -1,0 +1,63 @@
+﻿@model InvoiceManager.Models.Invoice
+
+@{
+                /**/
+
+                ViewBag.Title = "Details";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ITEMS AND DETAILS</h2>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit price</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            string displayUnitPrice = item.UnitPrice + " " + Model.Currency;
+            string displayAmount = item.Amount + " " + Model.Currency;
+
+            <tr>
+                <td>@item.Description</td>
+                <td>@item.Quantity</td>
+                <td>@displayUnitPrice</td>
+                <td>@displayAmount</td>
+            </tr>
+        }
+
+        @{ 
+            string displaySubtotal = Model.Subtotal + " " + Model.Currency;
+            string displayAdditional = Math.Round(((Model.Tax * Model.Subtotal) / 100), 2) + " " + Model.Currency;
+            string displayTotal = Model.Total + " " + Model.Currency;
+        }
+
+        <tr>
+            <td style="visibility:hidden"></td>
+            <td style="visibility:hidden"></td>
+            <th>Subtotal</th>
+            <td>@displaySubtotal</td>
+        </tr>
+
+        <tr>
+            <td style="visibility:hidden"></td>
+            <td style="visibility:hidden"></td>
+            <th>Tax @Model.Tax%</th>
+            <td>@displayAdditional</td>
+        </tr>
+
+        <tr>
+            <td style="visibility:hidden"></td>
+            <td style="visibility:hidden"></td>
+            <th>Total</th>
+            <td>@displayTotal</td>
+        </tr>
+    </tbody>
+</table>

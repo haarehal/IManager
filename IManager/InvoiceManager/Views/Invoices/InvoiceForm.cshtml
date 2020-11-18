@@ -1,0 +1,132 @@
+﻿@model InvoiceManager.ViewModels.InvoiceFormViewModel
+@using InvoiceManager.Models;
+
+@{
+    ViewBag.Title = "Invoice Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "Invoices"))
+{
+    <h2>New Invoice</h2>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Invoice.DateFinal)
+        @Html.TextBoxFor(model => model.Invoice.DateFinal, "{0:d MMM yyyy}", new { @class = "form-control", @type = "datetime-local" })
+        @Html.ValidationMessageFor(model => model.Invoice.DateFinal)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Invoice.Recipient)
+        @Html.TextBoxFor(model => model.Invoice.Recipient, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <p style="font-weight: bold">Tax</p>
+
+        @Html.RadioButtonFor(model => model.Invoice.Tax, 25.0, new { @checked = "checked", @name = "hrRadioBtn" })
+        <label for="hrRadioButton">HR (25%)</label>
+
+        <br />
+
+        @Html.RadioButtonFor(model => model.Invoice.Tax, 17.0, new { @name = "bhRadioBtn" })
+        <label for="bhRadioButton">BH (17%)</label>
+    </div>
+
+    <h2>Items</h2>
+
+    <button type="button" id="btnAddItem" onclick="AddRow()" class="btn btn-success">Add new item</button>
+
+    <table class="table table-bordered table-hover" id="itemsTable">
+        <thead id="thItems">
+            <tr>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>UnitPrice</th>
+            </tr>
+        </thead>
+
+        <tbody id="tbItems">
+            @{
+                string tdVisibility = "visible";
+            }
+
+            @for (int i = 0; i < Model.Items.Count(); i++)
+            {
+                var rowId = "trItem" + i.ToString();
+
+                <tr id=@rowId>
+                    <td style="display: none">
+                        <input name="Items.Index" type='hidden' value=@i.ToString() />
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(model => model.Items[i].Description, new { @class = "form-control input" })
+                        @Html.ValidationMessageFor(model => model.Items[i].Description)
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(model => model.Items[i].Quantity, new { @class = "form-control input", @type = "number", @min = "1" })
+                        @Html.ValidationMessageFor(model => model.Items[i].Quantity)
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(model => model.Items[i].UnitPrice, new { @class = "form-control input", @type = "number", @min = "0.1", @step = ".01" })
+                        @Html.ValidationMessageFor(model => model.Items[i].UnitPrice)
+                    </td>
+
+                    <td>
+                        <input id='btnAddBook' type="button" onclick="RemoveRow(@i)" class="btn btn-danger" value="REMOVE" />
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    @Html.AntiForgeryToken()
+
+    <button id="btnSubmit" onclick="SubmitForm()" type="button" class="btn btn-primary">Save new invoice</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script language="javascript" type="text/javascript">
+
+        const AddRow = () => {
+            @{
+                Model.Items.Add(new Item());
+            }
+
+            var index = $("#tbItems").children("tr").length;
+
+            var indexCell = "<td style='display:none'><input name='Items.Index' type = 'hidden' value = '" + index + "' /></td>";
+            var descriptionCell = "<td><input id='Items_" + index + "__Description' name = 'Items[" + index + "].Description' type = 'text' value = '' class = 'form-control input' /></td > ";
+            var quantityCell = "<td><input id='Items_" + index + "__Quantity' name ='Items[" + index + "].Quantity' type = 'number' value = '' class = 'form-control input' min='1' /></td > ";
+            var unitPriceCell = "<td><input id='Items_" + index + "__UnitPrice' name ='Items[" + index + "].UnitPrice' type = 'number' value = '' class = 'form-control input' min='0' step='.01' /></td > ";
+            var removeCell = "<td><input id='btnAddBook' type='button' value = 'REMOVE' onclick = 'RemoveRow(" + index + ")' class = 'btn btn-danger' /></td > ";
+
+            var newRow = "<tr id='trItem" + index + "'>" + indexCell + descriptionCell + quantityCell + unitPriceCell + removeCell + "</tr>";
+
+            $("#tbItems").append(newRow);
+        }
+
+        const RemoveRow = (id) => {
+            var rowId = "#trItem" + id;
+            $(rowId).remove();
+        }
+
+        const SubmitForm = () => {
+            var numOfItems = $("#tbItems").children("tr").length;
+
+            if (numOfItems == 0) {
+                bootbox.alert("Invoice needs to have at least one item!");
+                return;
+            }
+
+            $("#btnSubmit").attr("type", "submit");
+        }
+    </script>
+}

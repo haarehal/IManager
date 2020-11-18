@@ -1,0 +1,66 @@
+﻿@model IEnumerable<InvoiceManager.Models.Invoice>
+@using Microsoft.AspNet.Identity
+
+@{
+                /**/
+
+                ViewBag.Title = "List Of Invoices";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>List of invoices</h2>
+
+<p>
+    @Html.ActionLink("Create new invoice", "New", "Invoices", null, new { @class = "btn btn-primary" })
+</p>
+
+@if (!Model.Any())
+{
+    <h4>There are no invoices created.</h4>
+}
+else
+{
+    <table id="invoices" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date of creation</th>
+                <th>Final date for payment</th>
+                <th>Created by</th>
+                <th>Recipient</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var invoice in Model)
+            {
+                <tr>
+                    <td>@invoice.Id</td>
+                    <td>@invoice.DateCreated</td>
+                    <td>@invoice.DateFinal</td>
+                    <td>@invoice.Creator.Email</td>
+                    <td>@invoice.Recipient</td>
+
+                    @{ 
+                        string displayTotal = invoice.Total + " " + invoice.Currency;
+                    }
+
+                    <td>@displayTotal</td>
+
+                    <td>@Html.ActionLink("VIEW ITEMS AND DETAILS", "Details", "Invoices", new { id = invoice.Id }, null)</td>
+                    <td><button data-invoice-id="@invoice.Id" class="btn-link js-delete">DELETE</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section scripts
+{
+    <script>
+        $("#invoices").on("click", ".js-delete", function () {
+            bootbox.alert("This option will be available very soon..");
+        });
+    </script>
+}
