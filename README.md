@@ -1,6 +1,6 @@
 # IManager
 
-## ASP.NET MVC 5 aplikacija za kreiranje i pregledanje faktura 
+## ASP.NET MVC 5 aplikacija za upravljanje fakturama 
 
 Napomene:
 
