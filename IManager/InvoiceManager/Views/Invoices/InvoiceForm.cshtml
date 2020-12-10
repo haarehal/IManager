@@ -6,13 +6,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("Create", "Invoices"))
+@{ 
+    string targetAction;
+
+    if (Model.Invoice.Id == 0)
+    {
+        targetAction = "Create";
+    }
+    else
+    {
+        targetAction = "Update";
+    }
+}
+
+@using (Html.BeginForm(@targetAction, "Invoices"))
 {
-    <h2>New Invoice</h2>
+    <h2>@Model.Title</h2>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Invoice.DateFinal)
-        @Html.TextBoxFor(model => model.Invoice.DateFinal, "{0:d MMM yyyy}", new { @class = "form-control", @type = "datetime-local" })
+        @Html.TextBoxFor(model => model.Invoice.DateFinal, new { @class = "form-control", @type = "datetime-local" }) @*"{0:yyyy-MM-ddTHH:mm}"*@
         @Html.ValidationMessageFor(model => model.Invoice.DateFinal)
     </div>
 
@@ -24,33 +37,31 @@
     <div class="form-group">
         <p style="font-weight: bold">Tax</p>
 
-        @Html.RadioButtonFor(model => model.Invoice.Tax, 25.0, new { @checked = "checked", @name = "hrRadioBtn" })
+        @Html.RadioButtonFor(model => model.Invoice.TaxPercentage, 25.0, new { @checked = "checked", @name = "hrRadioBtn" })
         <label for="hrRadioButton">HR (25%)</label>
 
         <br />
 
-        @Html.RadioButtonFor(model => model.Invoice.Tax, 17.0, new { @name = "bhRadioBtn" })
+        @Html.RadioButtonFor(model => model.Invoice.TaxPercentage, 17.0, new { @name = "bhRadioBtn" })
         <label for="bhRadioButton">BH (17%)</label>
     </div>
 
+    @Html.HiddenFor(model => model.Invoice.Id)
+
     <h2>Items</h2>
 
-    <button type="button" id="btnAddItem" onclick="AddRow()" class="btn btn-success">Add new item</button>
+    <button type="button" id="btnAddItem" onclick="AddRow()" class="btn btn-success">ADD NEW ITEM</button>
 
     <table class="table table-bordered table-hover" id="itemsTable">
         <thead id="thItems">
             <tr>
                 <th>Description</th>
                 <th>Quantity</th>
-                <th>UnitPrice</th>
+                <th>Unit price</th>
             </tr>
         </thead>
 
         <tbody id="tbItems">
-            @{
-                string tdVisibility = "visible";
-            }
-
             @for (int i = 0; i < Model.Items.Count(); i++)
             {
                 var rowId = "trItem" + i.ToString();
@@ -78,6 +89,8 @@
                     <td>
                         <input id='btnAddBook' type="button" onclick="RemoveRow(@i)" class="btn btn-danger" value="REMOVE" />
                     </td>
+
+                    @Html.HiddenFor(model => model.Items[i].Id)
                 </tr>
             }
 
@@ -86,7 +99,7 @@
 
     @Html.AntiForgeryToken()
 
-    <button id="btnSubmit" onclick="SubmitForm()" type="button" class="btn btn-primary">Save new invoice</button>
+    <button id="btnSubmit" onclick="SubmitForm()" type="button" class="btn btn-primary">SAVE</button>
 }
 
 @section scripts
@@ -100,15 +113,16 @@
                 Model.Items.Add(new Item());
             }
 
-            var index = $("#tbItems").children("tr").length;
+            var index = parseInt($("#tbItems > tr:last-child > td:first-child > input").attr("value")) + 1;
 
             var indexCell = "<td style='display:none'><input name='Items.Index' type = 'hidden' value = '" + index + "' /></td>";
             var descriptionCell = "<td><input id='Items_" + index + "__Description' name = 'Items[" + index + "].Description' type = 'text' value = '' class = 'form-control input' /></td > ";
             var quantityCell = "<td><input id='Items_" + index + "__Quantity' name ='Items[" + index + "].Quantity' type = 'number' value = '' class = 'form-control input' min='1' /></td > ";
             var unitPriceCell = "<td><input id='Items_" + index + "__UnitPrice' name ='Items[" + index + "].UnitPrice' type = 'number' value = '' class = 'form-control input' min='0' step='.01' /></td > ";
             var removeCell = "<td><input id='btnAddBook' type='button' value = 'REMOVE' onclick = 'RemoveRow(" + index + ")' class = 'btn btn-danger' /></td > ";
+            var hiddenCell = "<input id='Items_" + index + "__Id' name='Items[" + index + "].Id' type='hidden' value='0' />"
 
-            var newRow = "<tr id='trItem" + index + "'>" + indexCell + descriptionCell + quantityCell + unitPriceCell + removeCell + "</tr>";
+            var newRow = "<tr id='trItem" + index + "'>" + indexCell + descriptionCell + quantityCell + unitPriceCell + removeCell + hiddenCell + "</tr>";
 
             $("#tbItems").append(newRow);
         }

@@ -91,7 +91,7 @@ namespace InvoiceManager.Controllers.Api
         [HttpDelete]
         public IHttpActionResult DeleteInvoice(int id)
         {
-            var invoiceInDb = _context.Invoices.SingleOrDefault(i => i.Id == id);
+            var invoiceInDb = _context.Invoices.Include(i => i.Items).SingleOrDefault(i => i.Id == id);
 
             if (invoiceInDb == null)
             {

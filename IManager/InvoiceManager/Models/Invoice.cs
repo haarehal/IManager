@@ -18,7 +18,7 @@ namespace InvoiceManager.Models
         [Display(Name = "Final date for payment")]
         public DateTime DateFinal { get; set; }
 
-        public ICollection<Item> Items { get; set; }
+        public List<Item> Items { get; set; }
 
         [Display(Name = "Subtotal")]
         public double Subtotal { get; set; }
@@ -34,7 +34,7 @@ namespace InvoiceManager.Models
         [StringLength(20)]
         public string Recipient { get; set; }
 
-        public double Tax { get; set; }
+        public double TaxPercentage { get; set; }
 
         public string Currency { get; set; }
     }

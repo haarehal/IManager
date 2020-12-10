@@ -255,6 +255,18 @@
     <Compile Include="Migrations\202011172329435_ResetIdCounterInTables.Designer.cs">
       <DependentUpon>202011172329435_ResetIdCounterInTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011241647372_RenameTaxProperty.cs" />
+    <Compile Include="Migrations\202011241647372_RenameTaxProperty.Designer.cs">
+      <DependentUpon>202011241647372_RenameTaxProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011252257555_MakeInvoiceIdNotNullable.cs" />
+    <Compile Include="Migrations\202011252257555_MakeInvoiceIdNotNullable.Designer.cs">
+      <DependentUpon>202011252257555_MakeInvoiceIdNotNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012101015364_ResetIdCounters.cs" />
+    <Compile Include="Migrations\202012101015364_ResetIdCounters.Designer.cs">
+      <DependentUpon>202012101015364_ResetIdCounters.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CurrencyName.cs" />
@@ -392,6 +404,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011172329435_ResetIdCounterInTables.resx">
       <DependentUpon>202011172329435_ResetIdCounterInTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011241647372_RenameTaxProperty.resx">
+      <DependentUpon>202011241647372_RenameTaxProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011252257555_MakeInvoiceIdNotNullable.resx">
+      <DependentUpon>202011252257555_MakeInvoiceIdNotNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012101015364_ResetIdCounters.resx">
+      <DependentUpon>202012101015364_ResetIdCounters.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

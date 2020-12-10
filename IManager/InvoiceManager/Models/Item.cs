@@ -19,10 +19,9 @@ namespace InvoiceManager.Models
         [Display(Name = "Unit price")]
         public double UnitPrice { get; set; }
 
-        [Display(Name = "Amount")]
         public double Amount { get; set; }
 
-        public int? InvoiceId { get; set; }
+        public int InvoiceId { get; set; }
 
         public Invoice Invoice { get; set; }
     }

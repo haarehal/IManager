@@ -16,17 +16,21 @@ namespace InvoiceManager.Dtos
         [Required]
         public DateTime DateFinal { get; set; }
 
-        public ICollection<ItemDto> Items { get; set; }
+        public List<ItemDto> Items { get; set; }
 
         public double Subtotal { get; set; }
 
         public double Total { get; set; }
 
-        //public ApplicationUser Creator { get; set; }
+        public string CreatorId { get; set; }
+
+        public virtual ApplicationUser Creator { get; set; }
 
         [StringLength(20)]
         public string Recipient { get; set; }
 
-        public double Tax { get; set; }
+        public double TaxPercentage { get; set; }
+
+        public string Currency { get; set; }
     }
 }

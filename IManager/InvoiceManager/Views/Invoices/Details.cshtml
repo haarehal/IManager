@@ -35,7 +35,7 @@
 
         @{ 
             string displaySubtotal = Model.Subtotal + " " + Model.Currency;
-            string displayAdditional = Math.Round(((Model.Tax * Model.Subtotal) / 100), 2) + " " + Model.Currency;
+            string displayAdditional = Math.Round(((Model.TaxPercentage * Model.Subtotal) / 100), 2) + " " + Model.Currency;
             string displayTotal = Model.Total + " " + Model.Currency;
         }
 
@@ -49,7 +49,7 @@
         <tr>
             <td style="visibility:hidden"></td>
             <td style="visibility:hidden"></td>
-            <th>Tax @Model.Tax%</th>
+            <th>Tax @Model.TaxPercentage%</th>
             <td>@displayAdditional</td>
         </tr>
 
