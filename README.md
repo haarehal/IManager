@@ -1,12 +1,12 @@
 # IManager
 
-## ASP.NET MVC 5 aplikacija za upravljanje fakturama 
+## ASP.NET MVC 5 application for invoices management
 
-Napomene:
+Notes:
 
-* Kao neregistrovani korisnik, aplikaciji je moguće pristupiti samo na Homepage
-* Aplikacija podrazumijeva dva tipa korisnika: Guest i Manager
-* Nakon izvršene registracije putem forme, registrovani korisnik ima ulogu Guest korisnika te može samo pregledati fakture
-* Samo menadžeri imaju privilegiju za dodavanje novih faktura. U aplikaciji su registrovana dva account-a za menadžere. Moguće je izvršiti login sa sljedećim podacima:
+* As an unregistered user, the application can be accessed only in Homepage
+* There are two types of application users: Guest and Manager
+* After completing registration through the form, registered user has a Guest role and can only view/inspect invoices
+* Only managers have the privilege for adding, updating and deleting invoices. Two accounts are already registered with Manager role, so it's possible to log in with data as follows:
 1. Email: harisalikadic@imanager.com; Password: "Haris123."
 2. Email: ivonamarkovic@imanager.com; Password: "Ivona123."
